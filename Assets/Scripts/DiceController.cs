@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DiceController : MonoBehaviour
+public class DiceController : MonoBehaviourPun
 {
     private List<int> sides = new List<int>();
     private Texture[] textures;
@@ -13,31 +14,24 @@ public class DiceController : MonoBehaviour
     private void OnEnable() => InputManager.OnInput += InputManager_OnInput;
     private void OnDisable() => InputManager.OnInput -= InputManager_OnInput;
 
-    private void InputManager_OnInput(InputKey key)
-    {
-        if (key == InputKey.Roll)
-        {
-            Roll();
-        }
-    }
-
     private void Start()
     {
-        FillSides();
+        //Fill sides
+        for (int i = 0; i < sidesCount; i++)
+            sides.Add(i);
 
         textures = Resources.LoadAll<Texture>("Textures");
         rend = GetComponent<Renderer>();
         mats = rend.materials;
     }
 
-    private void FillSides()
+    private void InputManager_OnInput(InputKey key)
     {
-        for (int i = 0; i < sidesCount; i++)
-        {
-            sides.Add(i);
-        }
+        if (key == InputKey.Roll && photonView.IsMine)
+            photonView.RPC(nameof(Roll), RpcTarget.All);
     }
 
+    [PunRPC]
     private void Roll()
     {
         sides = sides.Shuffle().ToList();

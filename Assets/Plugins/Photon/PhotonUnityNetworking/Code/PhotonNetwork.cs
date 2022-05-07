@@ -3306,7 +3306,12 @@ namespace Photon.Pun
             }
         }
 
-        #endif
+        public static void Instantiate(object dicePrefab, Vector3 zero, Quaternion identity)
+        {
+            throw new NotImplementedException();
+        }
+
+#endif
 
     }
 }

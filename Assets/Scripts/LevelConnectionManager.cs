@@ -18,11 +18,14 @@ public class LevelConnectionManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnPlayerEnteredRoom(Player newPlayer) => 
-        Debug.Log($"{newPlayer.NickName} joined. Total in room:{PhotonNetwork.CurrentRoom.PlayerCount}");
+    public override void OnPlayerEnteredRoom(Player newPlayer) => Debug.Log($"{newPlayer.NickName} joined. Total in room:{PhotonNetwork.CurrentRoom.PlayerCount}");
 
-    public override void OnPlayerLeftRoom(Player otherPlayer) => 
-        Debug.Log($"{otherPlayer.NickName} left. Total in room:{PhotonNetwork.CurrentRoom.PlayerCount}");
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Debug.Log($"{otherPlayer.NickName} left. Exiting...");
+        PhotonNetwork.Disconnect();
+        SceneManager.LoadScene(0);
+    }
 
     public override void OnDisconnected(DisconnectCause cause)
     {

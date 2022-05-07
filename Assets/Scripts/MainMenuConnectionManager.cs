@@ -4,19 +4,25 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class MainMenuConnectionManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TMP_Text connectionStatus_UI;
+    [SerializeField] private Button startButton;
+
     private object attemptsRoutine;
     private int connectionAttempts;
-    private static RoomOptions roomOptions;
+    private RoomOptions roomOptions;
+    private byte playerCount;
 
     private void Start()
     {
-        Connect();
+        startButton.gameObject.SetActive(false);
+        startButton.onClick.AddListener(StartGame);
 
-        static void Connect()
+        Connect();
+        void Connect()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.ConnectUsingSettings();
@@ -44,13 +50,35 @@ public class MainMenuConnectionManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        int playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
+        playerCount = PhotonNetwork.CurrentRoom.PlayerCount;
         var playerName = $"Player {playerCount}";
 
         PhotonNetwork.NickName = playerName;
-        Debug.Log($"Room joined as{playerName}");
+        Debug.Log($"Room joined as {playerName}");
+
+        if (PhotonNetwork.IsMasterClient)
+            Debug.Log($"Awaiting other players...");
+    }
+
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Debug.Log($"{newPlayer.NickName} joined.");
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            var isReady = PhotonNetwork.CurrentRoom.PlayerCount == 2;
+            startButton.gameObject.SetActive(isReady);
+        }
+    }
+
+    private void StartGame()
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
         PhotonNetwork.LoadLevel(1);
     }
+
     public override void OnDisconnected(DisconnectCause cause)
     {
         connectionStatus_UI.text += $"\nDisconnected\nCause: {cause}";
