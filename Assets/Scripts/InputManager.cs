@@ -13,8 +13,13 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
+            OnInput?.Invoke(InputKey.Pause);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
             OnInput?.Invoke(InputKey.Rotate);
         }
     }
 }
-    public enum InputKey { Roll, Rotate }
+    public enum InputKey { Roll, Rotate, Pause }

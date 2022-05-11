@@ -6,14 +6,19 @@ public class UIFPS : MonoBehaviour
 {
     private TMP_Text fpsText;
     private int currentFPS;
-    private float updateThresh = 20f;
+    private float updateThresh = 2f;
     private float updateDelay = 0.20f;
     private float timer;
     private int lastFPS;
 
     private void Awake() => fpsText = GetComponent<TMP_Text>();
 
-    private void LateUpdate()
+    private void Update()
+    {
+        currentFPS = Mathf.RoundToInt(1 / Time.deltaTime);
+        fpsText.text = $"FPS: {currentFPS.ToString("N0")}";
+    }
+    private void xUpdate()
     {
         currentFPS = Mathf.RoundToInt(1 / Time.deltaTime);
 

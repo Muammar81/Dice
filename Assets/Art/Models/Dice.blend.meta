@@ -7,33 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Side1
-    second: {fileID: 2100000, guid: 09a4a739b2e46604591867057e47654e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Side2
-    second: {fileID: 2100000, guid: 8f7f78541ddc5bc49b90c25a3f2dd55e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Side3
-    second: {fileID: 2100000, guid: 41c092f8f0b8c254a97aa5f0454c9715, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Side4
-    second: {fileID: 2100000, guid: 3621f0c535dd40c4b8aaa90b09089b4c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Side5
-    second: {fileID: 2100000, guid: 6b1626fb3ec694e43b36e374a0068a5b, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Side6
-    second: {fileID: 2100000, guid: 4e5f546539317374897417855a23d5da, type: 2}
+      name: Dice
+    second: {fileID: 2100000, guid: 16260001b29e20142be32dff202d1bc3, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

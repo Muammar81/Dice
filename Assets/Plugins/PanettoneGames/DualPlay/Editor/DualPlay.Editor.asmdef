@@ -2,7 +2,8 @@
     "name": "DualPlay.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:8c3bb5e1fc2187147b91861478e47561"
+        "GUID:8c3bb5e1fc2187147b91861478e47561",
+        "GUID:34a867650681bab428926275bd8c55c6"
     ],
     "includePlatforms": [
         "Editor"
