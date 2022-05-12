@@ -7,7 +7,7 @@ public class DiceController : MonoBehaviourPun
 {
     [SerializeField] private Color[] _colors;
     private Rigidbody _rb;
-    private float _tossForce = 40;
+    private float _tossForce = 5;
     private Material _mat;
     private Collider _collider;
     private DiceRotation diceRot;
@@ -30,41 +30,72 @@ public class DiceController : MonoBehaviourPun
         diceRot = GetComponent<DiceRotation>();
     }
 
+
     private void xUpdate()
     {
         if (IsGrounded())
             Debug.Log(Enum.GetName(typeof(Sides),side));
     }
-
+    private void FixedUpdate()
+    {
+        if (IsGrounded() && _rb.velocity.magnitude > 0.001f)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, rot, Time.deltaTime * 4);
+        }
+    }
     enum Sides { UP,DOWN,LEFT,RIGHT}
     Sides side;
+    private Quaternion rot;
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (IsGrounded())
-        {
-            _rb.isKinematic = true;
-            diceRot.enabled = true;
-        }
-
         Vector3 hit = collision.contacts[0].normal;
         float angle = Vector3.Angle(hit, Vector3.up);
 
         if (Mathf.Approximately(angle, 0))
+        {
             side = Sides.DOWN;
+            rot = Quaternion.Euler(Vector3.down);
+        }
 
         if (Mathf.Approximately(angle, 180))
+        {
             side = Sides.UP;
+            rot = Quaternion.Euler(Vector3.up);
+        }
 
         //Sides
         if (Mathf.Approximately(angle, 90))
         {
             Vector3 cross = Vector3.Cross(Vector3.forward, hit);
             if (cross.y > 0)
+            {
                 side = Sides.LEFT;
+                rot = Quaternion.Euler(Vector3.left);
+            }
             else
+            {
                 side = Sides.RIGHT;
+                rot = Quaternion.Euler(Vector3.right);
+            }
         }
+
+        if (IsGrounded())
+            StopRB();
+    }
+
+    private void StopRB()
+    {
+        if (_rb.velocity.magnitude < .01)
+        {
+            _rb.velocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            _rb.angularDrag = 0;
+            
+        }
+
+        //_rb.isKinematic = true;
+        //diceRot.enabled = true;
     }
 
     private void InputManager_OnInput(InputKey key)
